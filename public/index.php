@@ -9,4 +9,4 @@ require_once __DIR__ . '/../vendor/autoload.php';
 umask(0);
 $app = new App(true);
 $app->run();
-
+$app->terminate();

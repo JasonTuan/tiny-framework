@@ -33,6 +33,7 @@
     "require": {
         "php": ">=8.3",
         "smarty/smarty": "^5.4",
-        "nesbot/carbon": "^3.8"
+        "nesbot/carbon": "^3.8",
+        "ext-mysqli": "*"
     }
 }

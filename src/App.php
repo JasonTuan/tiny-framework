@@ -7,6 +7,7 @@ use JetBrains\PhpStorm\NoReturn;
 use Smarty\Exception;
 use TinyFramework\Models\Http\Request;
 use TinyFramework\Models\Http\Response;
+use TinyFramework\Services\DBService;
 use TinyFramework\Services\RouterServices;
 use Smarty\Smarty;
 
@@ -15,6 +16,7 @@ class App
     public RouterServices $router;
     public Request $request;
     public Smarty $view;
+    public DBService $db;
 
     public function __construct(
         public bool $debug = false,
@@ -41,6 +43,7 @@ class App
         if (empty($this->getToken())) {
             $this->genToken();
         }
+        $this->db = new DBService();
         $this->request = new Request();
         $this->router = new RouterServices();
         $this->view->assign('router', $this->router);
@@ -52,6 +55,11 @@ class App
         } else {
             render('Home/404.tpl', [], Response::HTTP_NOT_FOUND)->send();
         }
+    }
+
+    public function terminate(): void
+    {
+        $this->db->closeConnection();
     }
 
     public function genToken(): void

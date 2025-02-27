@@ -4,6 +4,7 @@ use TinyFramework\App;
 use TinyFramework\Models\Http\HtmlResponse;
 use TinyFramework\Models\Http\JsonResponse;
 use TinyFramework\Models\Http\Request;
+use TinyFramework\Services\DBService;
 use TinyFramework\Services\RouterServices;
 use Smarty\Smarty;
 
@@ -41,6 +42,11 @@ function csrf(): string
 function checkCsrf(?string $token): bool
 {
     return app()->checkToken($token);
+}
+
+function db(): DBService
+{
+    return app()->db;
 }
 
 function dd(...$args): void
