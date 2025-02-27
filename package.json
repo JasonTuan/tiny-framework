@@ -1,0 +1,31 @@
+{
+  "name": "calculate",
+  "version": "1.0.0",
+  "description": "calculate",
+  "main": "index.js",
+  "scripts": {
+    "serve": "php -S localhost:8000 -t public",
+    "build": "vite build --mode development",
+    "watch": "vite build --mode development --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "php_install": "php ./bin/composer.phar install"
+  },
+  "keywords": [
+    "qt",
+    "calculate"
+  ],
+  "author": "jason tuan <jasontuan.dev@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.1",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.3",
+    "jquery": "^3.7.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-inject": "^5.0.5",
+    "rollup-plugin-terser": "^7.0.2",
+    "sass": "^1.81.0",
+    "vite": "^5.4.11"
+  }
+}

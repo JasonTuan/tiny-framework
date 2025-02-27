@@ -1,0 +1,38 @@
+{
+    "name": "tuannguyen/tiny_framework",
+    "description": "TinyFramework",
+    "type": "project",
+    "readme": "README.md",
+    "license": "See MIT license in LICENSE",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "TinyFramework\\": "src/"
+        },
+        "files": [
+            "src/Helpers/app-helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Jason Tuan Nguyen",
+            "email": "tuan.nguyen@bliksund.com"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JasonTuan/demo-laravel.git"
+    },
+    "bugs": {
+        "url": "https://github.com/JasonTuan/demo-laravel/issues",
+        "email": "tuan.nguyen@bliksund.com"
+    },
+    "support": {
+        "email": "tuan.nguyen@bliksund.com"
+    },
+    "require": {
+        "php": ">=8.3",
+        "smarty/smarty": "^5.4",
+        "nesbot/carbon": "^3.8"
+    }
+}
