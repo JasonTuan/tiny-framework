@@ -21,6 +21,7 @@ class DBService
             $config['database']['username'],
             $config['database']['password'],
             $config['database']['database'],
+            $config['database']['port'],
         );
 
         if ($this->connection->connect_error) {

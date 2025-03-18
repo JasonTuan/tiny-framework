@@ -4,20 +4,24 @@ namespace TinyFramework;
 
 use Carbon\Carbon;
 use JetBrains\PhpStorm\NoReturn;
+use ReflectionException;
 use Smarty\Exception;
 use TinyFramework\Models\Http\Request;
 use TinyFramework\Models\Http\Response;
 use TinyFramework\Services\DBService;
-use TinyFramework\Services\RouterServices;
+use TinyFramework\Services\RouterService;
 use Smarty\Smarty;
 
 class App
 {
-    public RouterServices $router;
+    public RouterService $router;
     public Request $request;
     public Smarty $view;
     public DBService $db;
 
+    /**
+     * @throws \Exception
+     */
     public function __construct(
         public bool $debug = false,
     )
@@ -25,7 +29,7 @@ class App
         Carbon::setLocale('vi');
         $this->view = new Smarty();
         $this->view->setTemplateDir(__DIR__ . '/Views');
-        $this->view->setCompileDir(__DIR__ . '/../storages/view_compiles');
+        $this->view->setCompileDir(storePath('view_compiles'));
 //        $this->view->setCacheDir(__DIR__ . '/../storages/cache');
         //$this->view->setConfigDir(__DIR__ . '/../storages/configs');
     }
@@ -36,7 +40,7 @@ class App
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|ReflectionException
      */
     #[NoReturn] public function run(): void
     {
@@ -45,7 +49,7 @@ class App
         }
         $this->db = new DBService();
         $this->request = new Request();
-        $this->router = new RouterServices();
+        $this->router = new RouterService();
         $this->view->assign('router', $this->router);
         $this->view->assign('csrf', $this->getToken());
         $this->view->assign('app_paths', json_encode($this->router->getRoutes()));

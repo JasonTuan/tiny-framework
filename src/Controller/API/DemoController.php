@@ -12,4 +12,11 @@ class DemoController
             'say' => 'Hello ' . $name . '!',
         ]);
     }
+
+    public function demo1(): JsonResponse
+    {
+        return json_response([
+            'demo' => 'Demo 1',
+        ]);
+    }
 }

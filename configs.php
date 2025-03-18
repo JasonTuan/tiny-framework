@@ -5,9 +5,9 @@ return [
 // Uncomment the following lines to enable database connection
 //    'database' => [
 //        'host' => 'localhost',
-//        'port' => 3306,
-//        'database' => 'schema1',
-//        'username' => 'root',
-//        'password' => 'root',
+//        'port' => 3309,
+//        'database' => 'demo',
+//        'username' => 'demo',
+//        'password' => 'demo',
 //    ],
 ];

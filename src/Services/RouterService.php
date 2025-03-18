@@ -4,7 +4,7 @@ namespace TinyFramework\Services;
 
 use TinyFramework\Models\Http\Router;
 
-class RouterServices
+class RouterService
 {
     private array $routes = [];
 
@@ -48,43 +48,43 @@ class RouterServices
     public function getRoutes(): array
     {
         $routeData = require __DIR__ . '/../route.php';
+
+        return $this->parserRouter($routeData);
+    }
+
+    private function parserRouter(
+        array $routeData,
+        ?string $routeName = '',
+        ?string $routePath = '',
+        ?string $controller = null,
+        ?array $middlewares = [],
+    ): array
+    {
         $routes = [];
         foreach ($routeData as $name => $item) {
-            $controllerGroup = null;
-            $middlewareGroup = [];
+            $routeItemName = $routeName . $name;
+            $routeItemPath = $routePath;
+            $middlewaresItem = $middlewares;
+            if (!empty($item['path'])) {
+                $routeItemPath .= $item['path'];
+            }
             if (!empty($item['controller'])) {
-                $controllerGroup = $item['controller'];
+                $controller = $item['controller'];
             }
             if (!empty($item['middlewares'])) {
-                $middlewareGroup = $item['middlewares'];
+                $middlewaresItem = array_merge($middlewaresItem, $item['middlewares']);
             }
             if (isset($item['groups'])) {
-                foreach ($item['groups'] as $groupKey => $group) {
-                    $middlewareItem = $middlewareGroup;
-                    $controllerItem = $controllerGroup;
-                    if (!empty($group['middlewares'])) {
-                        $middlewareItem = array_merge($middlewareItem, $group['middlewares']);
-                    }
-                    if (!empty($group['controller'])) {
-                        $controllerItem = $group['controller'];
-                    }
-                    $router = new Router();
-                    $router->name = $name . $groupKey;
-                    $router->controller = $controllerItem;
-                    $router->path = $item['path'] . $group['path'];
-                    $router->method = $group['method'];
-                    $router->action = $group['action'] ?? null;
-                    $router->middlewares = $middlewareItem;
-                    $routes[] = $router;
-                }
+                $routesGroup = $this->parserRouter($item['groups'], $routeItemName, $routeItemPath, $controller, $middlewaresItem);
+                $routes = array_merge($routes, $routesGroup);
             } else {
                 $router = new Router();
-                $router->name = $name;
-                $router->controller = $controllerGroup;
-                $router->path = $item['path'];
+                $router->name = $routeItemName;
+                $router->controller = $controller;
+                $router->path = $routeItemPath;
                 $router->method = $item['method'];
                 $router->action = $item['action'] ?? null;
-                $router->middlewares = $middlewareGroup;
+                $router->middlewares = $middlewaresItem;
                 $routes[] = $router;
             }
         }

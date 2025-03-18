@@ -18,6 +18,14 @@ class Request
         $this->params = $_REQUEST;
         $this->cookies = $_COOKIE;
         $this->headers = getallheaders();
+
+        $rawInput = file_get_contents("php://input");
+        if ($rawInput) {
+            $rawInput = json_decode($rawInput, true);
+            if (is_array($rawInput)) {
+                $this->params = array_merge($this->params, $rawInput);
+            }
+        }
     }
 
     public function getHeader(string $header, mixed $defaultValue = null): mixed
@@ -30,8 +38,17 @@ class Request
         return getValue($this->routerParams, $param, $defaultValue);
     }
 
-    public function get(string $param, mixed $defaultValue = null): mixed
+    public function get(string $param, mixed $defaultValue = null, mixed $enumName = null): mixed
     {
-        return getValue($this->params, $param, $defaultValue);
+        $value = getValue($this->params, $param, $defaultValue);
+        if (!empty($value) && $enumName && enum_exists($enumName)) {
+            try {
+                return $enumName::from(strtoupper($value));
+            } catch (\Error $e) {
+                return $defaultValue;
+            }
+        }
+
+        return $value;
     }
 }
